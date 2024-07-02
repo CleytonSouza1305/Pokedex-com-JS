@@ -122,6 +122,93 @@ async function getPokemonByName(pokeName) {
     const url = `https://pokeapi.co/api/v2/pokemon/${pokeName}`
     const result = await fetch(url).then(res => res.json())
     const data = result
+
+    const pokemonName = data.name
+    const pokemonFrontImage = data.sprites.front_default
+    const pokemonBackImage = data.sprites.back_default
+
+    const h2 = document.createElement('h2')
+    h2.innerText = pokemonName
+
+    const divImage = document.createElement('div')
+    const leftImage = document.createElement('img')
+    const rightImage = document.createElement('img')
+
+    leftImage.src = pokemonFrontImage
+    rightImage.src = pokemonBackImage
+
+    divImage.append(leftImage, rightImage)
+
+    const p = document.createElement('p')
+    p.innerHTML = 'Tipos:'
+
+    const tipos = data.types
+
+    const contentInfo = document.querySelector('.pokemon-infos-content')
+    contentInfo.append(h2, divImage, p)
+    for (let i = 0; i < tipos.length; i++) {
+      const divEl = document.createElement('div')
+      divEl.classList.add('child-types')
+      const p = document.createElement('p')
+      p.innerHTML = tipos[i].type.name
+      const icon = document.createElement('img')
+
+      if (tipos[i].type.name === 'grass') {
+        icon.src = '../img/type-planta.webp'
+      } else if (tipos[i].type.name === 'poison') {
+        icon.src = '../img/type-veneno.webp'
+      } else if (tipos[i].type.name === 'fire') {
+        icon.src = '../img/type-fogo.webp'
+      } else if (tipos[i].type.name === 'flying') {
+        icon.src = '../img/type-voador.webp'
+      } else if (tipos[i].type.name === 'water') {
+        icon.src = '../img/type-agua.webp'
+      } else if (tipos[i].type.name === 'bug') {
+        icon.src = '../img/type-inseto.webp'
+      } else if (tipos[i].type.name === 'normal') {
+        icon.src = '../img/type-normal.webp'
+      } else if (tipos[i].type.name === 'electric') {
+        icon.src = '../img/type-eletrico.webp'
+      } else if (tipos[i].type.name === 'ground') {
+        icon.src = '../img/type-solo.webp'
+      } else if (tipos[i].type.name === 'fairy') {
+        icon.src = '../img/type-fada.webp'
+      } else if (tipos[i].type.name === 'fighting') {
+        icon.src = '../img/type-lutador.webp'
+      } else if (tipos[i].type.name === 'psychic') {
+        icon.src = '../img/type-psiquico.webp'
+      } else if (tipos[i].type.name === 'rock') {
+        icon.src = '../img/type-pedra.webp'
+      } else if (tipos[i].type.name === 'steel') {
+        icon.src = '../img/type-aco.webp'
+      } else if (tipos[i].type.name === 'ice') {
+        icon.src = '../img/type-gelo.webp'
+      } else if (tipos[i].type.name === 'ghost') {
+        icon.src = '../img/type-fantasma.webp'
+      } else if (tipos[i].type.name === 'dragon') {
+        icon.src = '../img/type-dragao.webp'
+      } else if (tipos[i].type.name === 'dark') {
+        icon.src = '../img/type-sombrio.webp'
+      } 
+
+      divEl.append(p, icon)
+      contentInfo.append(divEl)
+    }
+
+    const status = document.createElement('p');
+    status.innerHTML = 'Status:'; 
+    status.classList.add('status'); 
+    const contentStatus = document.createElement('div'); 
+    contentStatus.classList.add('content-status'); 
+    const stats = data.stats; 
+    contentStatus.appendChild(status); 
+    for (let i = 0; i < stats.length; i++) { 
+      const statElement = document.createElement('p'); 
+      statElement.innerHTML = `${stats[i].stat.name}: ${stats[i].base_stat}`; 
+      contentStatus.appendChild(statElement); 
+    } 
+    
+    contentInfo.appendChild(contentStatus);
     console.log(data);
   } catch (err) {
     const h1 = document.createElement('h1')
@@ -159,10 +246,9 @@ function showLoader() {
 function removeLoader() {
   const loader = document.querySelector('.loader')
   loader.classList.add('display')
-
-  const main = document.querySelector('main')
-  main.classList.remove('display')
 }
+
+getPokemonByName('bulbasaur')
 
 
 
