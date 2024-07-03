@@ -131,6 +131,7 @@ async function getPokemonByName(pokeName) {
     h2.innerText = pokemonName
 
     const divImage = document.createElement('div')
+    divImage.classList.add('div-image')
     const leftImage = document.createElement('img')
     const rightImage = document.createElement('img')
 
@@ -140,15 +141,18 @@ async function getPokemonByName(pokeName) {
     divImage.append(leftImage, rightImage)
 
     const p = document.createElement('p')
+    p.classList.add('p-types')
     p.innerHTML = 'Tipos:'
 
     const tipos = data.types
 
     const contentInfo = document.querySelector('.pokemon-infos-content')
     contentInfo.append(h2, divImage, p)
+    const divEnvolvet = document.createElement('div')
+    divEnvolvet.classList.add('div-envolvet')
     for (let i = 0; i < tipos.length; i++) {
       const divEl = document.createElement('div')
-      divEl.classList.add('child-types')
+      divEl.classList.add('child-types-icon')
       const p = document.createElement('p')
       p.innerHTML = tipos[i].type.name
       const icon = document.createElement('img')
@@ -192,23 +196,31 @@ async function getPokemonByName(pokeName) {
       } 
 
       divEl.append(p, icon)
-      contentInfo.append(divEl)
+      divEnvolvet.append(divEl)
+      contentInfo.append(divEnvolvet)
     }
 
     const status = document.createElement('p');
+    const divpStats = document.createElement('div')
+    divpStats.append(status)
     status.innerHTML = 'Status:'; 
     status.classList.add('status'); 
     const contentStatus = document.createElement('div'); 
     contentStatus.classList.add('content-status'); 
     const stats = data.stats; 
-    contentStatus.appendChild(status); 
+    contentStatus.appendChild(divpStats); 
+    const statusDivEl = document.createElement('div')
+    statusDivEl.classList.add('status-div-el')
     for (let i = 0; i < stats.length; i++) { 
       const statElement = document.createElement('p'); 
-      statElement.innerHTML = `${stats[i].stat.name}: ${stats[i].base_stat}`; 
-      contentStatus.appendChild(statElement); 
+      statElement.innerHTML = `- ${stats[i].stat.name}: ${stats[i].base_stat}`.toUpperCase()
+      statElement.classList.add('status-element')
+      
+      statusDivEl.append(statElement)
     } 
     
-    contentInfo.appendChild(contentStatus);
+    contentStatus.appendChild(statusDivEl);
+    contentInfo.appendChild( contentStatus);
     console.log(data);
   } catch (err) {
     const h1 = document.createElement('h1')
@@ -248,7 +260,7 @@ function removeLoader() {
   loader.classList.add('display')
 }
 
-getPokemonByName('bulbasaur')
+getPokemonByName('pidgey')
 
 
 
