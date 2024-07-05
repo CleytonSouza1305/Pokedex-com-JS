@@ -2,7 +2,7 @@ const pokemons = []
 const findedPokemon = []
 
 async function callApi() {
-  const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=48'
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=500'
   const result = await fetch(apiUrl).then((res) => res.json())
   const data = result.results
 
@@ -112,8 +112,6 @@ async function createCards(array) {
   const main = document.querySelector('main')
   main.append(container)
 }
-
-console.log(findedPokemon);
 const main = document.querySelector('main')
 
 async function getPokemonByName(pokeName) {
@@ -146,8 +144,16 @@ async function getPokemonByName(pokeName) {
 
     const tipos = data.types
 
+    const divButtonBack = document.createElement('div')
+    divButtonBack.classList.add('back-div')
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.textContent = 'X'
+    button.classList.add('back-button')
+    divButtonBack.append(button)
+
     const contentInfo = document.querySelector('.pokemon-infos-content')
-    contentInfo.append(h2, divImage, p)
+    contentInfo.append(divButtonBack, h2, divImage, p)
     const divEnvolvet = document.createElement('div')
     divEnvolvet.classList.add('div-envolvet')
     for (let i = 0; i < tipos.length; i++) {
@@ -221,7 +227,15 @@ async function getPokemonByName(pokeName) {
     
     contentStatus.appendChild(statusDivEl);
     contentInfo.appendChild( contentStatus);
-    console.log(data);
+    
+    const closeButton = document.querySelector('.back-button')
+    closeButton.addEventListener('click', () => {
+      const card = document.querySelector('.content-card')
+      card.classList.add('display')
+      main.classList.remove('display')
+      const contentVazio = document.querySelector('.pokemon-infos-content')
+      contentVazio.textContent = ''
+    })
   } catch (err) {
     const h1 = document.createElement('h1')
     h1.innerHTML = 'Nenhum resultado encontrado'
@@ -243,6 +257,8 @@ async function getPokemonByName(pokeName) {
 main.addEventListener('click', (event) => {
   if (event.target.classList.contains('see-more-btn')) {
     const dataSet = event.target.dataset.pokemon;
+    const card = document.querySelector('.content-card')
+    card.classList.remove('display')
     getPokemonByName(dataSet)
   }
 })
@@ -260,7 +276,6 @@ function removeLoader() {
   loader.classList.add('display')
 }
 
-getPokemonByName('pidgey')
 
 
 
